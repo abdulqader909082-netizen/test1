@@ -28,7 +28,6 @@ def set_background(image_file):
     st.markdown(css, unsafe_allow_html=True)
 set_background("default.jpg")    
 
-api="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"
 
 INDEX_PATH = "relativity_index.faiss"
 META_PATH = "relativity_meta.json"
@@ -46,10 +45,20 @@ def load_index_and_models():
         chunks = json.load(f)
 
     embedder = SentenceTransformer(EMBED_MODEL)
-    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=API_KEY)
+
+    # API Key من Streamlit Secrets
+    api = st.secrets["OPENROUTER_API_KEY"]
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=api
+    )
+
     return index, meta, chunks, embedder, client
 
+
+# Initialize once
 index, chunk_meta, chunks, embedder, client = load_index_and_models()
+
 
 def search(query, top_k=3):
     q_emb = embedder.encode([query], convert_to_numpy=True).astype("float32")
@@ -119,3 +128,4 @@ if st.button("Get Answer") and query.strip():
         st.markdown(f"**Page {r['meta']['page']}**: {r['text'][:200]}...")
 
     st.caption(f" Latency: {result['latency_sec']}s")
+
