@@ -34,7 +34,6 @@ META_PATH = "relativity_meta.json"
 CHUNKS_PATH = "relativity_chunks.json"  
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 LLM_MODEL = "mistralai/mixtral-8x7b-instruct"  
-API_KEY = api  
 
 @st.cache_resource
 def load_index_and_models():
