@@ -46,6 +46,7 @@ def load_index_and_models():
     embedder = SentenceTransformer(EMBED_MODEL)
 
     # API Key من Streamlit Secrets
+    
     api = st.secrets["OPENROUTER_API_KEY"]
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
@@ -112,6 +113,8 @@ def ask_question(query):
 
 st.title("📄 Special Relativity Q&A (RAG)")
 st.markdown("Ask questions about Special Relativity based on the provided documents.")
+st.write("API Key Loaded:", "OPENROUTER_API_KEY" in st.secrets)
+
 
 query = st.text_input("Write your question here:", "")
 
@@ -127,4 +130,5 @@ if st.button("Get Answer") and query.strip():
         st.markdown(f"**Page {r['meta']['page']}**: {r['text'][:200]}...")
 
     st.caption(f" Latency: {result['latency_sec']}s")
+
 
